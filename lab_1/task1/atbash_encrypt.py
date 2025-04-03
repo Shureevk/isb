@@ -35,6 +35,17 @@ def save_to_file(filename, data):
     except Exception as e:
         print(f"Ошибка при сохранении в файл {filename}: {e}")
 
+        def load_text_from_file(filename):
+            """Загрузка текста из файла"""
+            try:
+                with open(filename, 'r', encoding='utf-8') as f:
+                    return f.read()
+            except FileNotFoundError:
+                print(f"Файл {filename} не найден.")
+            except Exception as e:
+                print(f"Ошибка при чтении файла {filename}: {e}")
+            return ""
+
 def print_results(original, encrypted, key):
     """Вывод результатов шифрования в консоль
 
