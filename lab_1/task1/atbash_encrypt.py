@@ -1,7 +1,6 @@
 import json
-
-ALPHABET = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ "
-REVERSED_ALPHABET = ALPHABET[::-1]
+import os
+from constants import ALPHABET, FILE_ORIGINAL_TEXT, FILE_ENCRYPTED_TEXT, FILE_ENCRYPTION_KEY
 
 def create_atbash_key(alphabet):
     """Создание ключа шифрования Атбаш
@@ -26,12 +25,15 @@ def save_to_file(filename, data):
     :param filename: путь к файлу
     :param data: данные для сохранения
     """
-    if isinstance(data, str):
+    try:
+        os.makedirs(os.path.dirname(filename), exist_ok=True)  # Создаём папку, если её нет
         with open(filename, 'w', encoding='utf-8') as f:
-            f.write(data)
-    else:
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+            if isinstance(data, str):
+                f.write(data)
+            else:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Ошибка при сохранении в файл {filename}: {e}")
 
 def print_results(original, encrypted, key):
     """Вывод результатов шифрования в консоль
