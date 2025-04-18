@@ -84,14 +84,14 @@ def format_frequencies(frequencies: list[tuple[str, int]], total_symbols: int) -
     """
     lines = [
         f"Всего символов: {total_symbols}\n",
-        "Символ | Количество | Частота (%)",
+        "Символ | Количество | Частота",
         "--------------------------------"
     ]
 
     for char, count in frequencies:
-        frequency = (count / total_symbols) * 100
+        frequency = (count / total_symbols)
         char_repr = repr(char)[1:-1] if char in {'\n', '\t', '\r'} else char
-        lines.append(f"'{char_repr}'   | {count:9} | {frequency:.2f}%")
+        lines.append(f"'{char_repr}'   | {count:9} | {frequency:.4f}")
 
     return "\n".join(lines)
 
