@@ -55,3 +55,40 @@ def consecutive_runs_test(sequence: str) -> float:
     numerator = abs(v_n - 2 * n * p * (1 - p))
     denominator = 2 * math.sqrt(2 * n) * p * (1 - p)
     return math.erfc(numerator / denominator)
+
+def max_consecutive_ones_test(sequence: str) -> float:
+    """
+    Тест на максимальное количество последовательных единиц в блоке.
+    :param sequence: Бинарная строка.
+    :return: p-значение.
+    """
+    n = len(sequence)
+    if n < 128:
+        raise ValueError("Необходимо минимум 128 бит")
+
+    N = n // 8  # 8-битные блоки
+    v = [0, 0, 0, 0]  # Счётчики частот
+
+    for i in range(N):
+        block = sequence[i * 8 : (i + 1) * 8]
+        max_run = 0
+        current_run = 0
+
+        for bit in block:
+            if bit == '1':
+                current_run += 1
+                max_run = max(max_run, current_run)
+            else:
+                current_run = 0
+
+        if max_run <= 1:
+            v[0] += 1
+        elif max_run == 2:
+            v[1] += 1
+        elif max_run == 3:
+            v[2] += 1
+        else:
+            v[3] += 1
+
+    x_2 = sum((v[i] - 16 * PI[i]) ** 2 / (16 * PI[i]) for i in range(len(v)))
+    return gammainc(3 / 2, x_2 / 2)
