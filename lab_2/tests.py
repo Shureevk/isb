@@ -112,3 +112,16 @@ def perform_all_tests(sequence: str, label: str, output_file: str) -> None:
     )
 
     write_file(output_file, result)
+
+def main():
+    cpp_sequence = read_file(cpp_sequence_txt)
+    java_sequence = read_file(java_sequence_txt)
+    python_sequence = read_file(python_sequence_txt)
+
+    perform_all_tests(cpp_sequence, "C++", test_results_cpp)
+    perform_all_tests(java_sequence, "Java", test_results_java)
+    perform_all_tests(python_sequence, "Python", test_results_python)
+
+
+if __name__ == "__main__":
+    main()
