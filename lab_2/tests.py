@@ -92,3 +92,23 @@ def max_consecutive_ones_test(sequence: str) -> float:
 
     x_2 = sum((v[i] - 16 * PI[i]) ** 2 / (16 * PI[i]) for i in range(len(v)))
     return gammainc(3 / 2, x_2 / 2)
+
+def perform_all_tests(sequence: str, label: str, output_file: str) -> None:
+    """
+    Выполняет все тесты и сохраняет результат.
+    :param sequence: Бинарная строка.
+    :param label: Метка для последовательности (например, "C++").
+    :param output_file: Путь к файлу для записи результатов.
+    """
+    p1 = compute_bit_frequency(sequence)
+    p2 = consecutive_runs_test(sequence)
+    p3 = max_consecutive_ones_test(sequence)
+
+    result = (
+        f"{label} последовательность:\n{sequence}\n\n"
+        f"Частотный анализ битов (p-значение): {p1:.17f}\n"
+        f"Тест на идентичные последовательности битов (p-значение): {p2:.17f}\n"
+        f"Тест на максимальное количество последовательных единиц в блоке (p-значение): {p3:.17f}\n"
+    )
+
+    write_file(output_file, result)
