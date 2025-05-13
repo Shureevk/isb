@@ -27,3 +27,13 @@ def write_file(filename: str, text: str) -> None:
             file.write(text)
     except Exception as e:
         print(f"Ошибка при записи в файл: {e}")
+
+def compute_bit_frequency(sequence: str) -> float:
+    """
+    Частотный анализ битов.
+    :param sequence: Бинарная строка.
+    :return: p-значение.
+    """
+    n = len(sequence)
+    s = abs(1 / (math.sqrt(n)) * (sequence.count("1") - sequence.count("0")))
+    return math.erfc(s / math.sqrt(2))
