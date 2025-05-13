@@ -37,3 +37,21 @@ def compute_bit_frequency(sequence: str) -> float:
     n = len(sequence)
     s = abs(1 / (math.sqrt(n)) * (sequence.count("1") - sequence.count("0")))
     return math.erfc(s / math.sqrt(2))
+
+def consecutive_runs_test(sequence: str) -> float:
+    """
+    Тест на одинаково подряд идущие биты.
+    :param sequence: Бинарная строка.
+    :return: p-значение.
+    """
+    n = len(sequence)
+    p = sequence.count('1') / n
+
+    if abs(p - 0.5) >= 2 / math.sqrt(n):
+        return 0.0
+
+    v_n = sum(1 for i in range(1, n) if sequence[i] != sequence[i - 1])
+
+    numerator = abs(v_n - 2 * n * p * (1 - p))
+    denominator = 2 * math.sqrt(2 * n) * p * (1 - p)
+    return math.erfc(numerator / denominator)
