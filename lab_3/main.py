@@ -1,0 +1,36 @@
+import argparse
+import os
+import sys
+from decryption import DecryptionService
+from encryption import EncryptionService
+from file_operations import FileOperations
+from keygen import SymmetricCrypto, AsymmetricCrypto
+
+
+def generate_keys(config: dict):
+    """
+    Генерирует и сохраняет все необходимые криптографические ключи.
+
+    :param config: Configuration dictionary with file paths
+    :raises SystemExit: If key generation fails
+    """
+    print("==== Key Generation Mode ====")
+
+    try:
+        key_size = SymmetricCrypto.get_key_size()
+        symmetric_key = SymmetricCrypto.generate_key(key_size)
+        print(f"Symmetric key ({key_size} bits) generated successfully.")
+
+        private_key, public_key = AsymmetricCrypto.generate_keypair()
+        print("RSA keypair (2048 bits) generated successfully.")
+
+        AsymmetricCrypto.save_private_key(private_key, config['private_key'])
+        AsymmetricCrypto.save_public_key(public_key, config['public_key'])
+
+        encrypted_key = EncryptionService.encrypt_key(symmetric_key, public_key)
+        FileOperations.save_encrypted_key(encrypted_key, config['encrypted_symmetric_key'])
+
+        print("All keys saved successfully!")
+    except Exception as e:
+        print(f"Key generation error: {str(e)}")
+        sys.exit(1)

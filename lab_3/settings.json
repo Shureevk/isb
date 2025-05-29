@@ -1,6 +1,6 @@
 {
-    "private_key": "keys/private_key.pem",
-    "public_key": "keys/public_key.pem",
+    "private_key": "keys/private_key.txt",
+    "public_key": "keys/public_key.txt",
     "encrypted_symmetric_key": "keys/encrypted_symmetric_key.txt",
     "plaintext": "texts/plaintext.txt",
     "encrypted_text": "texts/encrypted_text.txt",
