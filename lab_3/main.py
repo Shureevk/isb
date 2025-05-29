@@ -88,3 +88,43 @@ def decrypt_data(config: dict) -> None:
     except Exception as e:
         print(f"Decryption failed: {str(e)}")
         raise SystemExit(1)
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Hybrid Cryptosystem (3DES + RSA)")
+    parser.add_argument('-s', '--settings', default='settings.json',
+                        help='Path to config file (default: settings.json)')
+
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-gen', '--generation', action='store_true',
+                       help='Key generation mode')
+    group.add_argument('-enc', '--encryption', action='store_true',
+                       help='Encryption mode')
+    group.add_argument('-dec', '--decryption', action='store_true',
+                       help='Decryption mode')
+
+    args = parser.parse_args()
+
+    try:
+        config = FileOperations.load_config(args.settings)
+    except Exception as e:
+        print(f"Config loading error: {str(e)}")
+        sys.exit(1)
+
+    try:
+        os.makedirs('keys', exist_ok=True)
+        os.makedirs('texts', exist_ok=True)
+    except Exception as e:
+        print(f"Directory creation error: {str(e)}")
+        sys.exit(1)
+
+    if args.generation:
+        generate_keys(config)
+    elif args.encryption:
+        encrypt_data(config)
+    elif args.decryption:
+        decrypt_data(config)
+
+
+if __name__ == "__main__":
+    main()
