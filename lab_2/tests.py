@@ -66,8 +66,8 @@ def max_consecutive_ones_test(sequence: str) -> float:
     if n < 128:
         raise ValueError("Необходимо минимум 128 бит")
 
-    N = n // 8  # 8-битные блоки
-    v = [0, 0, 0, 0]  # Счётчики частот
+    N = n // 8
+    v = [0, 0, 0, 0]
 
     for i in range(N):
         block = sequence[i * 8 : (i + 1) * 8]
