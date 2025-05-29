@@ -58,3 +58,33 @@ def encrypt_data(config: dict):
     except Exception as e:
         print(f"Encryption failed: {str(e)}")
         raise SystemExit(1)
+
+def decrypt_data(config: dict) -> None:
+    """
+    Расшифровывает зашифрованный текст с помощью гибридной криптосистемы.
+
+    :param config: Configuration dictionary with file paths
+    :raises SystemExit: If decryption fails
+    """
+    print("==== Decryption Mode ====")
+    try:
+        encrypted_key = AsymmetricCrypto.load_encrypted_key(config['encrypted_symmetric_key'])
+        private_key = AsymmetricCrypto.load_private_key(config['private_key'])
+        symmetric_key = EncryptionService.decrypt_key(encrypted_key, private_key)
+
+        iv = FileOperations.read_data(config['encrypted_iv'])
+        ciphertext = FileOperations.read_data(config['encrypted_text'])
+
+        plaintext_bytes = DecryptionService.decrypt_data(ciphertext, symmetric_key, iv)
+
+        try:
+            plaintext = plaintext_bytes.decode('utf-8')
+        except UnicodeDecodeError:
+            plaintext = plaintext_bytes.decode('cp1251')
+
+        FileOperations.write_text_file(config['decrypted_text'], plaintext)
+
+        print("Data decrypted successfully")
+    except Exception as e:
+        print(f"Decryption failed: {str(e)}")
+        raise SystemExit(1)
